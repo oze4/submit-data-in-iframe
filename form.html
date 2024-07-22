@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form</title>
+</head>
+<body>
+  <h1>join list</h1>
+  <p id="result"></p>
+  <button id="submit-button" style="background-color:lightgreen">submit without form (this  works)</button>
+  <form id="submit-form-non-working">
+    <button style="background-color:lightsalmon" type="submit">submit using form (does not work)</button>
+  </form>
+  <form id="submit-form-working">
+    <button style="background-color:lightgreen" type="submit">submit using form and preventDefault (this works)</button>
+  </form>
+  <script>
+    async function sleep(ms) {
+      return new Promise((resolve, _reject) => {
+        setTimeout(resolve, ms);
+      });
+    }
+
+    async function mockSubmit(delay, resultsElement) {
+      resultsElement.innerText = "submitting...";
+      await sleep(delay);
+      resultsElement.innerText = "Success!";
+    }
+
+    const submitButtonElement = document.getElementById("submit-button");
+    const resultsElement = document.getElementById("result");
+    const submitFormNonWorkingElement = document.getElementById("submit-form-non-working");
+    const submitFormWorkingElement = document.getElementById("submit-form-working");
+
+    submitButtonElement.addEventListener("click", (event) => {
+      mockSubmit(1750, resultsElement);
+    });
+    
+    submitFormNonWorkingElement.addEventListener("submit", (event) => {
+      mockSubmit(1750, resultsElement);
+    });
+
+    submitFormWorkingElement.addEventListener("submit", (event) => {
+      event.preventDefault();
+      mockSubmit(1750, resultsElement);
+    });
+  </script>
+</body>
+</html>
